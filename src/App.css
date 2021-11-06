@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+.error {
+  border: 2px solid red
+}
+.errorMessage {
+  color: red
+}
+.activeButton {
+  background-color: royalblue;
+  color: white;
+}
+.taskIsDone {
+  opacity: 0.5;
+}
