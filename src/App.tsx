@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
+import { AddItemForm } from './components/AddItemForm';
 
 export type TaskType = {
   id: string
@@ -79,8 +80,39 @@ function App() {
     setTasks({ ...tasksObj })
   }
 
+  const addTodolist = (newTodolistTitle: string) => {
+    let newTodolist: TodolistType = {
+      id: v1(),
+      title: newTodolistTitle,
+      filter: 'all'
+    }
+    setTodolists([newTodolist, ...todolists])
+    setTasks({
+      ...tasksObj,
+      [newTodolist.id]: []
+    })
+  }
+
+  const changeTaskTitle = (id: string, newTaskTitle: string, todolistID: string) => {
+    let todolistsTasks = tasksObj[todolistID]
+    let task = todolistsTasks.find(f => f.id === id)
+    if (task) {
+      task.title = newTaskTitle
+    }
+    setTasks({ ...tasksObj })
+  }
+
+  const changeTodolistTitle = (id: string, newTodolistTitle: string) => {
+    let todolist = todolists.find(f => f.id === id)
+    if (todolist) {
+      todolist.title = newTodolistTitle
+    }
+    setTodolists([...todolists])
+  }
+
   return (
     <div className="App">
+      <AddItemForm addItem={addTodolist} />
       {todolists.map(tl => {
 
         let allTasksForTodolist = tasksObj[tl.id]
@@ -101,6 +133,8 @@ function App() {
             changeFilter={changeFilter}
             addTask={addTask}
             changeStatus={changeStatus}
+            changeTaskTitle={changeTaskTitle}
+            changeTodolistTitle={changeTodolistTitle}
             filter={tl.filter}
             removeTodolist={removeTodolist} />
         )
