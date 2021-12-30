@@ -11,20 +11,23 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
     }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.charCode === 13) {
-            props.addItem(newTaskTitle)
-            setNewTaskTitle('')
-        }
-    }
-    const addTaskHandler = () => {
+    const addTask = ()=> {
         if (newTaskTitle.trim() !== '') {
             props.addItem(newTaskTitle)
             setNewTaskTitle('')
-        } else {
+        }else{
             setError('Title is required')
         }
+    }
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        setError(null)
+        if (e.charCode === 13) {
+            addTask()
+        }
+
+    }
+    const addTaskHandler = () => {
+        addTask()
     }
     return (
         <div>
