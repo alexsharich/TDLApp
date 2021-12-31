@@ -49,8 +49,7 @@ export const todolistsReducer = (state: Array<TodolistType>, action: ActionsType
                 return [...state]
             }
         }
-        default:
-            throw new Error('i dont understand this type')
+        return state
     }
 }
 
