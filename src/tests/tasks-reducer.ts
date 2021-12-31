@@ -2,6 +2,8 @@ import { title } from "process";
 import React from "react";
 import { v1 } from "uuid";
 import { TasksStateType, TodolistType } from "../App";
+import { AddTodolistActionType, RemoveTodolistActionType } from "./todolist-reducer";
+
 
 type removeTaskAC = {
     type: 'REMOVE-TASK'
@@ -26,10 +28,13 @@ type changeTaskStatusAC = {
     todolistId: string
 }
 
+
 type ActionsType = removeTaskAC
     | addTaskAC
     | changeTaskTitleAC
     | changeTaskStatusAC
+    | AddTodolistActionType
+    | RemoveTodolistActionType
 
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
@@ -67,9 +72,19 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             }
             return stateCopy
         }
-
+        case 'ADD-TODOLIST': {
+            const stateCopy = { ...state }
+            stateCopy[action.id] = []
+            return stateCopy
+        }
+        case 'REMOVE-TODOLIST': {
+            const stateCopy = { ...state }
+            delete stateCopy[action.id]
+            return stateCopy
+        }
             return state
     }
+
 }
 
 export const removeTaskAC = (id: string, todolistId: string): removeTaskAC => {
