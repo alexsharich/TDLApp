@@ -4,7 +4,7 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { AddTodolistAC, ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer } from './tests/todolist-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './tests/todolist-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
@@ -55,21 +55,21 @@ function App() {
   }
 
   const removeTodolist = (todolistId: string) => {
-    const action = RemoveTodolistAC(todolistId)
+    const action = removeTodolistAC(todolistId)
     dispatch(action)
     dispatch(action)
   }
   const addTodolist = (newTodolistTitle: string) => {
-    const action = AddTodolistAC(newTodolistTitle)
+    const action = addTodolistAC(newTodolistTitle)
     dispatch(action)
     dispatch(action)
   }
   const changeTodolistTitle = (id: string, newTodolistTitle: string) => {
-    const action = ChangeTodolistTitleAC(id, newTodolistTitle)
+    const action = changeTodolistTitleAC(id, newTodolistTitle)
     dispatch(action)
   }
   const changeFilter = (todolistId: string, value: FilterValueType) => {
-    const action = ChangeTodolistFilterAC(todolistId, value)
+    const action = changeTodolistFilterAC(todolistId, value)
     dispatch(action)
   }
 

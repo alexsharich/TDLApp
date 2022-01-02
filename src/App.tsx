@@ -4,7 +4,7 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { AddTodolistAC, ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC, todolistsReducer } from './tests/todolist-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './tests/todolist-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './tests/tasks-reducer';
 
 export type TaskType = {
@@ -63,21 +63,21 @@ function App() {
   }
 
   const removeTodolist = (todolistId: string) => {
-    const action = RemoveTodolistAC(todolistId)
+    const action = removeTodolistAC(todolistId)
     dispatchToTaskReducer(action)
     dispatchToTodolistReducer(action)
   }
   const addTodolist = (newTodolistTitle: string) => {
-    const action = AddTodolistAC(newTodolistTitle)
+    const action = addTodolistAC(newTodolistTitle)
     dispatchToTodolistReducer(action)
     dispatchToTaskReducer(action)
   }
   const changeTodolistTitle = (id: string, newTodolistTitle: string) => {
-    const action = ChangeTodolistTitleAC(id, newTodolistTitle)
+    const action = changeTodolistTitleAC(id, newTodolistTitle)
     dispatchToTodolistReducer(action)
   }
   const changeFilter = (todolistId: string, value: FilterValueType) => {
-    const action = ChangeTodolistFilterAC(todolistId, value)
+    const action = changeTodolistFilterAC(todolistId, value)
     dispatchToTodolistReducer(action)
   }
 
