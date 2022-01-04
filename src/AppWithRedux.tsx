@@ -24,7 +24,7 @@ export type TodolistType = {
 }
 export type FilterValueType = 'all' | 'active' | 'completed'
 
-function App() {
+function AppWithRedux() {
 
   const dispatch = useDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
@@ -32,10 +32,6 @@ function App() {
 
   let todolistId1 = v1();
   let todolistId2 = v1();
-
-
-
-
 
   const removeTask = useCallback((id: string, todolistId: string) => {
     const action = removeTaskAC(id, todolistId)
@@ -62,7 +58,6 @@ function App() {
   const addTodolist = useCallback((newTodolistTitle: string) => {
     const action = addTodolistAC(newTodolistTitle)
     dispatch(action)
-    dispatch(action)
   }, [dispatch])
   const changeTodolistTitle = useCallback((id: string, newTodolistTitle: string) => {
     const action = changeTodolistTitleAC(id, newTodolistTitle)
@@ -82,12 +77,12 @@ function App() {
         let allTasksForTodolist = tasks[tl.id]
         let tasksForTodolist = allTasksForTodolist
 
-        
+
         return (
           <Todolist key={tl.id}
             id={tl.id}
             title={tl.title}
-            task={tasksForTodolist}
+            tasks={tasksForTodolist}
             removeTask={removeTask}
             changeFilter={changeFilter}
             addTask={addTask}
@@ -103,4 +98,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWithRedux;

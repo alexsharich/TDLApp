@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react';
-import logo from './logo.svg';
+/* import logo from './logo.svg';
 import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
@@ -100,7 +100,7 @@ function App() {
           <Todolist key={tl.id}
             id={tl.id}
             title={tl.title}
-            task={tasksForTodolist}
+            tasks={tasksForTodolist}
             removeTask={removeTask}
             changeFilter={changeFilter}
             addTask={addTask}
@@ -116,4 +116,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; */

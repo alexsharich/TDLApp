@@ -2,7 +2,7 @@ import { title } from "process";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { v1 } from "uuid";
-import { TasksStateType, TodolistType } from "../App";
+import { TasksStateType, TodolistType } from "../AppWithRedux";
 import { AddTodolistActionType, RemoveTodolistActionType, todolistId1, todolistId2 } from "./todolist-reducer";
 
 
@@ -70,23 +70,19 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return stateCopy
         }
         case 'CHANGE-TASK-STATUS': {
-            
+
             let todolistsTasks = state[action.todolistId]
-            let task = todolistsTasks.find(f => f.id === action.taskId)
-            if (task) {
-                task.isDone = action.status
-            }
-            state[action.todolistId] = [...todolistsTasks]
-            return ({...state})
+            state[action.todolistId] = todolistsTasks.map(t => t.id === action.taskId
+                ? { ...t, isDone: action.status }
+                : t)
+            return ({ ...state })
         }
         case 'CHANGE-TASK-TITLE': {
             let todolistsTasks = state[action.todolistId]
-            let task = todolistsTasks.find(f => f.id === action.taskId)
-            if (task) {
-                task.title = action.title
-            }
-            state[action.todolistId] = [...todolistsTasks]
-            return ({...state})
+            state[action.todolistId] = todolistsTasks.map(t => t.id === action.taskId
+                ? { ...t, title: action.title }
+                : t)
+            return ({ ...state })
         }
         case 'ADD-TODOLIST': {
             const stateCopy = { ...state }
