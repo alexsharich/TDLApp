@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { FilterValueType, TaskType } from "./AppWithRedux";
 import { AddItemForm } from "./components/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
@@ -8,14 +8,13 @@ type TodolistPropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
-
+    filter: FilterValueType
     changeFilter: (todolistID: string, value: FilterValueType) => void
     addTask: (newTitleTask: string, todolistID: string) => void
     removeTask: (id: string, todolistID: string) => void
     changeStatus: (id: string, isDone: boolean, todolistID: string) => void
     changeTaskTitle: (id: string, newValue: string, todolistID: string) => void
     changeTodolistTitle: (id: string, newValue: string) => void
-    filter: FilterValueType
     removeTodolist: (todolistID: string) => void
 }
 

@@ -5,6 +5,7 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -26,7 +27,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         if (e.charCode === 13) {
             addTask()
         }
-
     }
     const addTaskHandler = () => {
         addTask()

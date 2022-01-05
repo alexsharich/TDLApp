@@ -5,7 +5,7 @@ import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
 import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './tests/todolist-reducer';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './tests/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 
@@ -14,14 +14,17 @@ export type TaskType = {
   title: string
   isDone: boolean
 }
+
 export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
+
 export type TodolistType = {
   id: string
   title: string
   filter: FilterValueType
 }
+
 export type FilterValueType = 'all' | 'active' | 'completed'
 
 function AppWithRedux() {
@@ -77,7 +80,6 @@ function AppWithRedux() {
         let allTasksForTodolist = tasks[tl.id]
         let tasksForTodolist = allTasksForTodolist
 
-
         return (
           <Todolist key={tl.id}
             id={tl.id}
@@ -92,8 +94,8 @@ function AppWithRedux() {
             filter={tl.filter}
             removeTodolist={removeTodolist} />
         )
-      })}
-
+      })
+      }
     </div>
   );
 }

@@ -1,26 +1,30 @@
 import React from "react";
 import { v1 } from "uuid";
-import { FilterValueType, TaskType, TodolistType } from "../AppWithRedux";
+import { FilterValueType, TodolistType } from "../AppWithRedux";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
     id: string
 }
+
 export type AddTodolistActionType = {
     type: 'ADD-TODOLIST'
     title: string
     id: string
 }
+
 type ChangeTodolistTitleActionType = {
     type: 'CHANGE-TODOLIST-TITLE'
     id: string
     title: string
 }
+
 type ChangeTodolistFilterActionType = {
     type: 'CHANGE-TODOLIST-FILTER'
     id: string
     filter: FilterValueType
 }
+
 type ActionsType = RemoveTodolistActionType
     | AddTodolistActionType
     | ChangeTodolistTitleActionType
@@ -68,6 +72,7 @@ export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType =
         id: todolistId
     }
 }
+
 export const addTodolistAC = (newTodolistTitle: string): AddTodolistActionType => {
     return {
         type: 'ADD-TODOLIST',
@@ -75,6 +80,7 @@ export const addTodolistAC = (newTodolistTitle: string): AddTodolistActionType =
         id: v1()
     }
 }
+
 export const changeTodolistTitleAC = (todolistId: string, newTodolistTitle: string): ChangeTodolistTitleActionType => {
     return {
         type: 'CHANGE-TODOLIST-TITLE',
@@ -82,6 +88,7 @@ export const changeTodolistTitleAC = (todolistId: string, newTodolistTitle: stri
         title: newTodolistTitle
     }
 }
+
 export const changeTodolistFilterAC = (todolistId: string, newFilter: FilterValueType): ChangeTodolistFilterActionType => {
     return {
         type: 'CHANGE-TODOLIST-FILTER',
