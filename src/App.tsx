@@ -4,8 +4,9 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, todolistsReducer } from './tests/todolist-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC, TodolistsDomainType, todolistsReducer } from './tests/todolist-reducer';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer } from './tests/tasks-reducer';
+import { TaskStatuses, TodoTaskPriority } from './api/todolistApi';
 
 export type TaskType = {
   id: string
@@ -27,21 +28,21 @@ function App() {
   let todolistId1 = v1();
   let todolistId2 = v1();
 
-  let [todolists, dispatchToTodolistReducer] = useReducer(todolistsReducer, [
-    { id: todolistId1, title: 'What to learn', filter: 'all' },
-    { id: todolistId2, title: 'What to buy', filter: 'all' }
+  let [todolists, setTodolists] = useState<Array<TodolistsDomainType>>([
+    { id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0 },
+    { id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0 }
   ])
 
-  let [tasks, dispatchToTaskReducer] = useReducer(tasksReducer, {
+  let [tasks, dispatchToTaskReducer] = useState<TasksStateType>({
     [todolistId1]: [
-      { id: v1(), title: 'HTML&CSS', isDone: true },
-      { id: v1(), title: 'REACT', isDone: false },
-      { id: v1(), title: 'JS', isDone: true }
+      { id: v1(), title: 'HTML&CSS', status: TaskStatuses.Completed, todolistId: todolistId1,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''  },
+      { id: v1(), title: 'REACT', status: TaskStatuses.Completed, todolistId: todolistId1,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''   },
+      { id: v1(), title: 'JS', status: TaskStatuses.Completed, todolistId: todolistId1,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''   }
     ],
     [todolistId2]: [
-      { id: v1(), title: 'book', isDone: true },
-      { id: v1(), title: 'milk', isDone: true },
-      { id: v1(), title: 'oil', isDone: true }
+      { id: v1(), title: 'book', status: TaskStatuses.Completed, todolistId: todolistId2,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''   },
+      { id: v1(), title: 'milk', status: TaskStatuses.Completed, todolistId: todolistId2,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''   },
+      { id: v1(), title: 'oil', status: TaskStatuses.Completed, todolistId: todolistId2,startDate: '',deadLine:'',addedDate:'',order:0,priority:TodoTaskPriority.Hi,description:''   }
     ],
   })
 
@@ -116,4 +117,5 @@ function App() {
   );
 }
 
-export default App; */
+export default App;
+ */
