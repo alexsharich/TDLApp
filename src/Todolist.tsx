@@ -1,9 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "./api/todolistApi";
 
 import { AddItemForm } from "./components/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
 import { Task } from "./components/Task";
+import { fetchTasksThunkCreator } from "./tests/tasks-reducer";
 import { FilterValueType } from "./tests/todolist-reducer";
 
 type TodolistPropsType = {
@@ -29,6 +31,12 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     const removeTodolistHandler = () => props.removeTodolist(props.id)
     const changeTodolistTitle = useCallback((newValue: string) => props.changeTodolistTitle(props.id, newValue), [props.changeTodolistTitle, props.id])
     const addTask = useCallback((newTaskTitle: string) => props.addTask(newTaskTitle, props.id), [props.addTask, props.id])
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksThunkCreator(props.id))
+    }, [])
 
     let tasksForTodolist = props.tasks
 
