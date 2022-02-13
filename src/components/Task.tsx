@@ -3,9 +3,9 @@ import { TaskStatuses, TaskType } from '../api/todolistApi'
 import { EditableSpan } from './EditableSpan'
 
 type TaskPropsType = {
-    removeTask: (id: string, todolistID: string) => void
-    changeStatus: (id: string, status: TaskStatuses, todolistID: string) => void
-    changeTaskTitle: (id: string, newValue: string, todolistID: string) => void
+    removeTask: (id: string, todolistId: string) => void
+    changeStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
+    changeTaskTitle: (id: string, newValue: string, todolistId: string) => void
     task: TaskType
     todolistId: string
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
-import { TaskStatuses, TaskType, todolistAPI, TodoTaskPriority } from "../api/todolistApi";
+import { TaskStatuses, TaskType, todolistAPI, TodoTaskPriority, UpdateTaskType } from "../api/todolistApi";
 import { TasksStateType } from "../AppWithRedux";
+import { AppRootStateType } from "../store";
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistActionType, setTodolistsAC, todolistId1, todolistId2 } from "./todolist-reducer";
 
 type removeTaskActionType = {
@@ -20,10 +21,10 @@ type changeTaskTitleActionType = {
     title: string
     todolistId: string
 }
-type changeTaskStatusActionType = {
-    type: 'CHANGE-TASK-STATUS'
+type UpdateTaskActionType = {
+    type: 'UPDATE-TASK'
     taskId: string
-    status: TaskStatuses
+    model: UpdateDomainTaskModelType
     todolistId: string
 }
 type SetTasksActionType = {
@@ -34,13 +35,22 @@ type SetTasksActionType = {
 type ActionsType = removeTaskActionType
     | addTaskActionType
     | changeTaskTitleActionType
-    | changeTaskStatusActionType
+    | UpdateTaskActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
     | SetTodolistActionType
     | SetTasksActionType
 
 const initialState: TasksStateType = {
+}
+
+type UpdateDomainTaskModelType = {
+    title?: string
+    description?: string
+    status?: TaskStatuses
+    priority?: TodoTaskPriority
+    startDate?: string
+    deadLine?: string
 }
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
@@ -60,12 +70,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             stateCopy[newTask.todoListId] = newTasks
             return stateCopy
         }
-        case 'CHANGE-TASK-STATUS': {
+        case 'UPDATE-TASK': {
 
             let todolistsTasks = state[action.todolistId]
-            state[action.todolistId] = todolistsTasks.map(t => t.id === action.taskId
-                ? { ...t, isDone: action.status }
-                : t)
+            let newTasksArray = todolistsTasks.map(t => t.id === action.taskId ? { ...t, ...action.model } : t)
+            state[action.todolistId] = newTasksArray
             return ({ ...state })
         }
         case 'CHANGE-TASK-TITLE': {
@@ -124,11 +133,11 @@ export const changeTaskTitleAC = (taskId: string, title: string, todolistId: str
         todolistId: todolistId
     }
 }
-export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string): changeTaskStatusActionType => {
+export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string): UpdateTaskActionType => {
     return {
-        type: 'CHANGE-TASK-STATUS',
+        type: 'UPDATE-TASK',
         taskId: taskId,
-        status: status,
+        model: model,
         todolistId: todolistId
     }
 }
@@ -165,6 +174,31 @@ export const addTaskThunkCreator = (todolistId: string, title: string) => {
                 const task = res.data.data.item
                 const action = addTaskAC(task)
                 dispatch(action)
+            })
+    }
+}
+export const updateTaskThunkCreator = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) => {
+    return (dispatch: Dispatch, getState: () => AppRootStateType) => {
+
+        const state = getState()
+        const task = state.tasks[todolistId].find(t => t.id === taskId)
+        if (!task) {
+            console.warn('Task not found')
+            return
+        }
+
+        const APImodel: UpdateTaskType = {
+            deadLine: task.deadline,
+            description: task.description,
+            priority: task.priority,
+            startDate: task.startDate,
+            status: task.status,
+            title: task.title,
+            ...domainModel
+        }
+        todolistAPI.updateTask(todolistId, taskId, APImodel)
+            .then(res => {
+                dispatch(updateTaskAC(taskId, domainModel, todolistId))
             })
     }
 }

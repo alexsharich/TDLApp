@@ -4,8 +4,8 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { addTodolistAC, addTodolistThunkCreator, changeTodolistFilterAC, changeTodolistTitleAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistAC, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
-import { addTaskThunkCreator, changeTaskStatusAC, changeTaskTitleAC, removeTaskThunkCreator } from './tests/tasks-reducer';
+import { addTodolistThunkCreator, changeTodolistFilterAC, changeTodolistTitleAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistAC, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
+import { addTaskThunkCreator, changeTaskTitleAC, removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 import { TaskStatuses, TaskType } from './api/todolistApi';
@@ -34,13 +34,11 @@ function AppWithRedux() {
     const action = addTaskThunkCreator(todolistId, title)
     dispatch(action)
   }, [dispatch])
-  const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-    const action = changeTaskStatusAC(id, status, todolistId)
-    dispatch(action)
+  const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
+    dispatch(updateTaskThunkCreator(taskId, { status }, todolistId))
   }, [dispatch])
-  const changeTaskTitle = useCallback((id: string, newTaskTitle: string, todolistId: string) => {
-    const action = changeTaskTitleAC(id, newTaskTitle, todolistId)
-    dispatch(action)
+  const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
+    dispatch(updateTaskThunkCreator(id, { title: newTitle }, todolistId))
   }, [dispatch])
 
   const removeTodolist = useCallback((todolistId: string) => {
