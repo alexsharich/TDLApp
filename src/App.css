@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
   display: flex;
   flex-direction: row;
@@ -51,4 +51,16 @@
 }
 .taskIsDone {
   opacity: 0.5;
+} */
+.App {
+  background-color: rgb(196, 196, 160);
+}
+.filterButtonsBlock{
+  padding: 10px;
+}
+.todolistBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:center;
 }

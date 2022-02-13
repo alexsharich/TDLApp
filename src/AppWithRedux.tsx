@@ -9,6 +9,16 @@ import { addTaskThunkCreator, changeTaskTitleAC, removeTaskThunkCreator, updateT
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 import { TaskStatuses, TaskType } from './api/todolistApi';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import { Menu } from '@material-ui/icons';
+import Button from '@material-ui/core/Button/Button';
+import Typography from '@material-ui/core/Typography/Typography';
+import Container from '@material-ui/core/Container/Container';
+import Grid from '@material-ui/core/Grid/Grid';
+import Paper from '@material-ui/core/Paper/Paper';
+
 
 export type TasksStateType = {
   [key: string]: Array<TaskType>
@@ -60,29 +70,52 @@ function AppWithRedux() {
 
   return (
     <div className="App">
-      <AddItemForm addItem={addTodolist} />
-      {todolists.map(tl => {
+      <AppBar position='static' >
+        <Toolbar>
+          <IconButton edge='start' color='inherit' aria-label='menu'>
+            <Menu />
+          </IconButton>
+          <Typography variant='h6'>
+            TODOLIST
+          </Typography>
+          <Button color='inherit'>Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container style={{ padding: '20px' }}>
+          <AddItemForm addItem={addTodolist} />
+        </Grid>
+        <Grid container spacing={3}>
+          {
+            todolists.map(tl => {
 
-        let allTasksForTodolist = tasks[tl.id]
-        let tasksForTodolist = allTasksForTodolist
+              let allTasksForTodolist = tasks[tl.id]
+              let tasksForTodolist = allTasksForTodolist
 
-        return (
-          <Todolist key={tl.id}
-            id={tl.id}
-            title={tl.title}
-            tasks={tasksForTodolist}
-            removeTask={removeTask}
-            changeFilter={changeFilter}
-            addTask={addTask}
-            changeStatus={changeStatus}
-            changeTaskTitle={changeTaskTitle}
-            changeTodolistTitle={changeTodolistTitle}
-            filter={tl.filter}
-            removeTodolist={removeTodolist} />
-        )
-      })
-      }
-    </div>
+              return (
+                <Grid item>
+                  <Paper style={{ padding: '10px' }}>
+                    <Todolist key={tl.id}
+                      id={tl.id}
+                      title={tl.title}
+                      tasks={tasksForTodolist}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+                      addTask={addTask}
+                      changeStatus={changeStatus}
+                      changeTaskTitle={changeTaskTitle}
+                      changeTodolistTitle={changeTodolistTitle}
+                      filter={tl.filter}
+                      removeTodolist={removeTodolist} />
+                  </Paper>
+                </Grid>
+              )
+            })
+          }
+        </Grid>
+      </Container>
+
+    </div >
   );
 }
 
