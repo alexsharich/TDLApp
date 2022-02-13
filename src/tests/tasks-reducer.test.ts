@@ -287,7 +287,7 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"][0].title).toBe('juce');
     expect(endState["todolistId2"][0].status).toBe(0);
 })
-test.skip('status of specified task should be changed', () => {
+test('status of specified task should be changed', () => {
     const startState: TasksStateType = {
         "todolistId1": [
             {
@@ -372,14 +372,14 @@ test.skip('status of specified task should be changed', () => {
         ]
     };
 
-    const action = updateTaskAC("2", TaskStatuses.New, "todolistId2");
+    const action = updateTaskAC("2", { status: TaskStatuses.New }, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][1].status).toBeFalsy();
     expect(endState['todolistId1'][1].status).toBeTruthy();
 });
-test.skip('title of specified task should be changed', () => {
+test('title of specified task should be changed', () => {
     const startState: TasksStateType = {
         "todolistId1": [
             {
@@ -465,14 +465,14 @@ test.skip('title of specified task should be changed', () => {
         ]
     };
 
-    const action = changeTaskTitleAC("2", 'happy', "todolistId2");
+    const action = updateTaskAC("2", { title: 'happy' }, "todolistId2");
 
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][1].title).toBe('happy');
     expect(endState['todolistId1'][1].title).toBe('JS');
 });
-test.skip('new array should be added when new todolist is added', () => {
+test('new array should be added when new todolist is added', () => {
     const startState: TasksStateType = {
         "todolistId1": [
             {
@@ -554,19 +554,24 @@ test.skip('new array should be added when new todolist is added', () => {
         ]
     };
 
-    //const action = addTodolistAC("new todolist");
+    const action = addTodolistAC({
+        id: 'idtodlistIdfortest',
+        addedDate: '',
+        order: 0,
+        title: 'new todolist'
+    });
 
-    //const endState = tasksReducer(startState, action)
+    const endState = tasksReducer(startState, action)
 
 
-   // const keys = Object.keys(endState);
-    //const newKey = keys.find(k => k != "todolistId1" && k != "todolistId2");
-    //if (!newKey) {
-   //     throw Error("new key should be added")
-   // }
+    const keys = Object.keys(endState);
+    const newKey = keys.find(k => k != "todolistId1" && k != "todolistId2");
+    if (!newKey) {
+        throw Error("new key should be added")
+    }
 
-    //expect(keys.length).toBe(3);
-    //expect(endState[newKey]).toEqual([]);
+    expect(keys.length).toBe(3);
+    expect(endState[newKey]).toEqual([]);
 });
 test.skip('property with todolistId should be deleted', () => {
     const startState: TasksStateType = {
