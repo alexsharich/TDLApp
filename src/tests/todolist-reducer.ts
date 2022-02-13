@@ -6,7 +6,7 @@ import { TaskType, todolistAPI, TodolistType } from "../api/todolistApi";
 
 export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST'
-    id: string
+    todolistId: string
 }
 export type AddTodolistActionType = {
     type: 'ADD-TODOLIST'
@@ -48,7 +48,7 @@ export type TodolistsDomainType = TodolistType & { filter: FilterValueType }
 export const todolistsReducer = (state: Array<TodolistsDomainType> = initialState, action: ActionsType): Array<TodolistsDomainType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST': {
-            return state.filter(tl => tl.id !== action.id)
+            return state.filter(tl => tl.id !== action.todolistId)
         }
         case 'ADD-TODOLIST': {
             return [...state,
@@ -91,7 +91,7 @@ export const todolistsReducer = (state: Array<TodolistsDomainType> = initialStat
 export const removeTodolistAC = (todolistId: string): RemoveTodolistActionType => {
     return {
         type: 'REMOVE-TODOLIST',
-        id: todolistId
+        todolistId: todolistId
     }
 }
 export const addTodolistAC = (newTodolistTitle: string): AddTodolistActionType => {
@@ -130,5 +130,14 @@ export const fetchTodolistsThunkCreator = () => {
                 const action = setTodolistsAC(res.data)
                 dispatch(action)
             })
+    }
+}
+export const removeTodolistThunkCreator = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.removeTodolist(todolistId)
+            .then(res => {
+                dispatch(removeTodolistAC(todolistId))
+            })
+
     }
 }

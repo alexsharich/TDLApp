@@ -4,7 +4,7 @@ import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, fetchTodolistsThunkCreator, FilterValueType, removeTodolistAC, TodolistsDomainType } from './tests/todolist-reducer';
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, fetchTodolistsThunkCreator, FilterValueType, removeTodolistAC, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
 import { addTaskThunkCreator, changeTaskStatusAC, changeTaskTitleAC, removeTaskThunkCreator } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
@@ -44,9 +44,9 @@ function AppWithRedux() {
   }, [dispatch])
 
   const removeTodolist = useCallback((todolistId: string) => {
-    const action = removeTodolistAC(todolistId)
-    dispatch(action)
-    dispatch(action)
+    const thunk = removeTodolistThunkCreator(todolistId)
+    dispatch(thunk)
+   // dispatch(action)
   }, [dispatch])
   const addTodolist = useCallback((newTodolistTitle: string) => {
     const action = addTodolistAC(newTodolistTitle)
