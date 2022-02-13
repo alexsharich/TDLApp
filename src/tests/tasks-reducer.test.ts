@@ -179,7 +179,7 @@ test.skip('correct task should be deleted from correct array', () => {
     });
 
 });
-test.skip('correct task should be added to correct array', () => {
+test('correct task should be added to correct array', () => {
     const startState: TasksStateType = {
         "todolistId1": [
             {
@@ -265,7 +265,19 @@ test.skip('correct task should be added to correct array', () => {
         ]
     };
 
-    const action = addTaskAC("juce", "todolistId2");
+    const action = addTaskAC({
+        todoListId: 'todolistId2',
+        title: 'juce',
+        description: '',
+        status: TaskStatuses.New,
+        priority: TodoTaskPriority.Low,
+        startDate: '',
+        deadline: '',
+        order: 0,
+        completed: false,
+        addedDate: '',
+        id: 'id exist'
+    });
 
     const endState = tasksReducer(startState, action)
 
@@ -273,7 +285,7 @@ test.skip('correct task should be added to correct array', () => {
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][0].id).toBeDefined();
     expect(endState["todolistId2"][0].title).toBe('juce');
-    expect(endState["todolistId2"][0].status).toBe(false);
+    expect(endState["todolistId2"][0].status).toBe(0);
 })
 test.skip('status of specified task should be changed', () => {
     const startState: TasksStateType = {
