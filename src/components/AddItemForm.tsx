@@ -1,5 +1,5 @@
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import TextField from "@material-ui/core/TextField/TextField";
+import IconButton from "@material-ui/core/IconButton";
+import TextField from "@material-ui/core/TextField";
 import { ControlPoint } from "@material-ui/icons";
 import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 

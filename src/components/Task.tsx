@@ -1,5 +1,5 @@
-import Checkbox from '@material-ui/core/Checkbox/Checkbox'
-import IconButton from '@material-ui/core/IconButton/IconButton'
+import Checkbox from '@material-ui/core/Checkbox'
+import IconButton from '@material-ui/core/IconButton'
 import { Delete } from '@material-ui/icons'
 import React, { ChangeEvent, useCallback } from 'react'
 import { TaskStatuses, TaskType } from '../api/todolistApi'

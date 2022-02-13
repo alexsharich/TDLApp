@@ -1,23 +1,22 @@
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import logo from './logo.svg';
+import React, { useCallback, useEffect} from 'react';
 import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
-import { addTodolistThunkCreator, changeTodolistFilterAC, changeTodolistTitleAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistAC, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
-import { addTaskThunkCreator, changeTaskTitleAC, removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
+import { addTodolistThunkCreator, changeTodolistFilterAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
+import { addTaskThunkCreator,  removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 import { TaskStatuses, TaskType } from './api/todolistApi';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
 import { Menu } from '@material-ui/icons';
-import Button from '@material-ui/core/Button/Button';
-import Typography from '@material-ui/core/Typography/Typography';
-import Container from '@material-ui/core/Container/Container';
-import Grid from '@material-ui/core/Grid/Grid';
-import Paper from '@material-ui/core/Paper/Paper';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 
 export type TasksStateType = {

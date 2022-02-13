@@ -1,10 +1,9 @@
-import Button from "@material-ui/core/Button/Button";
-import IconButton from "@material-ui/core/IconButton/IconButton";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import { Delete } from "@material-ui/icons";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { TaskStatuses, TaskType } from "./api/todolistApi";
-
 import { AddItemForm } from "./components/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
 import { Task } from "./components/Task";
