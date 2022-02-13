@@ -2,6 +2,8 @@ import React from "react";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { TaskStatuses, TaskType, todolistAPI, TodoTaskPriority, UpdateTaskType } from "../api/todolistApi";
+import { setErrorAC, SetErrorActionType, setStatusAC, SetStatusActionType } from "../app-reducer";
+
 import { TasksStateType } from "../AppWithRedux";
 import { AppRootStateType } from "../store";
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistActionType, setTodolistsAC, todolistId1, todolistId2 } from "./todolist-reducer";
@@ -40,6 +42,8 @@ type ActionsType = removeTaskActionType
     | RemoveTodolistActionType
     | SetTodolistActionType
     | SetTasksActionType
+    | SetErrorActionType
+    | SetStatusActionType
 
 const initialState: TasksStateType = {
 }
@@ -152,9 +156,11 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasks
 //Thunks
 export const fetchTasksThunkCreator = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.getTasks(todolistId)
             .then(res => {
                 dispatch(setTasksAC(res.data.items, todolistId))
+                dispatch(setStatusAC('succeeded'))
             })
     }
 }
@@ -169,11 +175,22 @@ export const removeTaskThunkCreator = (id: string, todolistId: string) => {
 }
 export const addTaskThunkCreator = (todolistId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.createTask(todolistId, title)
             .then(res => {
-                const task = res.data.data.item
-                const action = addTaskAC(task)
-                dispatch(action)
+                if (res.data.resultCode === 0) {
+                    const task = res.data.data.item
+                    const action = addTaskAC(task)
+                    dispatch(action)
+                    dispatch(setStatusAC('succeeded'))
+                } else {
+                    if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setErrorAC('Some error occurred'))
+                    }
+                    dispatch(setStatusAC('failed'))
+                }
             })
     }
 }

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
 import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
 import { addTodolistThunkCreator, changeTodolistFilterAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
-import { addTaskThunkCreator,  removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
+import { addTaskThunkCreator, removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 import { TaskStatuses, TaskType } from './api/todolistApi';
@@ -17,6 +17,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+import { RequestStatusType } from './app-reducer';
 
 
 export type TasksStateType = {
@@ -28,6 +32,7 @@ function AppWithRedux() {
   const dispatch = useDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistsDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+  const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
   useEffect(() => {
     dispatch(fetchTodolistsThunkCreator())
@@ -67,9 +72,18 @@ function AppWithRedux() {
     dispatch(action)
   }, [dispatch])
 
+  const error = useSelector<AppRootStateType, string | null>(state => state.app.error)
+
+  const isOpen = error !== null
+
   return (
     <div className="App">
       <AppBar position='static' >
+        <Snackbar open={isOpen} autoHideDuration={3000} >
+          <Alert severity="error" >
+            {error}
+          </Alert>
+        </Snackbar>
         <Toolbar>
           <IconButton edge='start' color='inherit' aria-label='menu'>
             <Menu />
@@ -79,6 +93,7 @@ function AppWithRedux() {
           </Typography>
           <Button color='inherit'>Login</Button>
         </Toolbar>
+        {status === 'loading' && <LinearProgress color="secondary" />}
       </AppBar>
       <Container fixed>
         <Grid container style={{ padding: '20px' }}>

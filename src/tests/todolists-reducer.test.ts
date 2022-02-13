@@ -14,14 +14,16 @@ test('correct todolist should be removed', () => {
             title: "What to learn",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         },
         {
             id: todolistId2,
             title: "What to buy",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         }
     ]
     const action = {
@@ -47,14 +49,16 @@ test('correct todolist should be added', () => {
             title: "What to learn",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         },
         {
             id: todolistId2,
             title: "What to buy",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         }
     ]
 const todolist:TodolistType = {
@@ -82,14 +86,16 @@ test('correct todolist should change its name', () => {
             title: "What to learn",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         },
         {
             id: todolistId2,
             title: "What to buy",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         }
     ]
 
@@ -117,14 +123,16 @@ test('correct filter of todolist should be changed', () => {
             title: "What to learn",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         },
         {
             id: todolistId2,
             title: "What to buy",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         }
     ]
 
@@ -149,14 +157,16 @@ test('Todolists should be set to the state', () => {
             title: "What to learn",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         },
         {
             id: todolistId2,
             title: "What to buy",
             filter: "all",
             addedDate: '',
-            order: 0
+            order: 0,
+            entityStatus:'idle'
         }
     ]
 
