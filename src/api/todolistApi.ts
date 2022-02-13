@@ -12,13 +12,13 @@ export const todolistAPI = {
         return instance.get<Array<TaskType>>('todo-lists')
     },
     createTodolis(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>(`todo-lists/`, { title: 'todolist in API' })
+        return instance.post<ResponseType<{ item: TodolistType }>>(`todo-lists/`, { title: title })
     },
     removeTodolist(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
     updateTodolist(id: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${id}`, { title: 'updated title' })
+        return instance.put<ResponseType>(`todo-lists/${id}`, { title: title })
     },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`/todo-lists/${todolistId}/tasks`)
