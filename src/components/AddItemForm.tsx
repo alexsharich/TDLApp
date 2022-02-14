@@ -5,9 +5,10 @@ import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 
 type AddItemFormPropsType = {
     addItem: (newTaskTitle: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({ addItem, disabled = false }: AddItemFormPropsType) => {
 
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
@@ -17,7 +18,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     }
     const addTask = () => {
         if (newTaskTitle.trim() !== '') {
-            props.addItem(newTaskTitle)
+            addItem(newTaskTitle)
             setNewTaskTitle('')
         } else {
             setError('Title is required')
@@ -41,6 +42,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler} /> */}
             <TextField error={!!error}
+                disabled={disabled}
                 variant={'outlined'}
                 label={'Type value'}
                 value={newTaskTitle}
@@ -48,6 +50,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                 onKeyPress={onKeyPressHandler}
                 helperText={error} />
             <IconButton onClick={addTaskHandler}
+                disabled={disabled}
                 color={'primary'}>
                 <ControlPoint />
             </IconButton>

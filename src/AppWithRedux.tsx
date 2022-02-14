@@ -110,8 +110,9 @@ function AppWithRedux() {
                 <Grid item>
                   <Paper style={{ padding: '10px' }}>
                     <Todolist key={tl.id}
-                      id={tl.id}
-                      title={tl.title}
+                      todolist={tl}
+                      /* id={tl.id}
+                      title={tl.title} */
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
@@ -119,7 +120,7 @@ function AppWithRedux() {
                       changeStatus={changeStatus}
                       changeTaskTitle={changeTaskTitle}
                       changeTodolistTitle={changeTodolistTitle}
-                      filter={tl.filter}
+                     /*  filter={tl.filter} */
                       removeTodolist={removeTodolist} />
                   </Paper>
                 </Grid>
