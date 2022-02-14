@@ -8,7 +8,7 @@ import { AddItemForm } from "./components/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
 import { Task } from "./components/Task";
 import { fetchTasksThunkCreator } from "./tests/tasks-reducer";
-import { FilterValueType } from "./tests/todolist-reducer";
+import { FilterValueType, TodolistsDomainType } from "./tests/todolist-reducer";
 
 type TodolistPropsType = {
     id: string
@@ -22,6 +22,7 @@ type TodolistPropsType = {
     changeTaskTitle: (id: string, newValue: string, todolistId: string) => void
     changeTodolistTitle: (id: string, newValue: string) => void
     removeTodolist: (todolistId: string) => void
+    todolist: TodolistsDomainType
 }
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
@@ -52,11 +53,11 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     return (
         <div className='todolistBlock'>
             <h3><EditableSpan title={props.title} onChange={changeTodolistTitle} />
-                <IconButton onClick={removeTodolistHandler}>
+                <IconButton onClick={removeTodolistHandler} disabled={props.todolist.entityStatus === 'loading'}>
                     <Delete />
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'} />
             <div>
                 {tasksForTodolist.map(t => <Task key={t.id}
                     task={t}

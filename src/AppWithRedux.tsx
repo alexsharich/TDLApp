@@ -32,7 +32,7 @@ function AppWithRedux() {
   const dispatch = useDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistsDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-  const statusRequest = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  const statusRequest = useSelector<AppRootStateType, RequestStatusType>(state => state.app.statusRequest)
 
   useEffect(() => {
     dispatch(fetchTodolistsThunkCreator())
@@ -82,7 +82,7 @@ function AppWithRedux() {
       <AppBar position='static' >
         <Snackbar open={isOpen} autoHideDuration={3000} >
           <Alert severity="error" >
-            {error}
+            <span>{error}</span>
           </Alert>
         </Snackbar>
         <Toolbar>
@@ -111,6 +111,7 @@ function AppWithRedux() {
                 <Grid item>
                   <Paper style={{ padding: '10px' }}>
                     <Todolist key={tl.id}
+                    todolist={tl}
                       id={tl.id}
                       title={tl.title}
                       tasks={tasksForTodolist}

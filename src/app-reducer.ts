@@ -1,29 +1,31 @@
 import React from 'react'
 
 export type InitialStateType = {
-    status: RequestStatusType
+    statusRequest: RequestStatusType
     error: string | null
 }
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
 type ActionsType = ReturnType<typeof setErrorAC> | ReturnType<typeof setStatusAC>
+
 export type SetErrorActionType = {
     type: 'APP-SET-ERROR',
     error: string | null
 }
 export type SetStatusActionType = {
     type: 'APP-SET-STATUS',
-    status: RequestStatusType
+    statusRequest: RequestStatusType
 }
 
 const initialState: InitialStateType = {
-    status: 'idle',
+    statusRequest: 'idle',
     error: null
 }
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP-SET-STATUS':
-            return { ...state, status: action.status }
+            return { ...state, statusRequest: action.statusRequest }
         case 'APP-SET-ERROR':
             return { ...state, error: action.error }
 
@@ -38,9 +40,9 @@ export const setErrorAC = (error: string | null): SetErrorActionType => {
         error: error
     } as const
 }
-export const setStatusAC = (status: RequestStatusType): SetStatusActionType => {
+export const setStatusAC = (statusRequest: RequestStatusType): SetStatusActionType => {
     return {
         type: 'APP-SET-STATUS',
-        status: status
+        statusRequest: statusRequest
     } as const
 }

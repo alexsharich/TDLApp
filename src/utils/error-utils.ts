@@ -1,9 +1,8 @@
 import { setErrorAC, setStatusAC } from "../app-reducer"
 import React from 'react'
-/* 
-import { ResponseType } from '../api/todolistApi'
-import { ActionsType } from "../tests/tasks-reducer"
 import { Dispatch } from "redux"
+import { ActionsType } from "../tests/tasks-reducer"
+import { ResponseType } from '../api/todolistApi'
 
 export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch<ActionsType>) => {
     if (data.messages.length) {
@@ -16,4 +15,4 @@ export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatc
 export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch<ActionsType>) => {
     dispatch(setErrorAC(error.message ? error.message : 'Some error occured'))
     dispatch(setStatusAC('failed'))
-} */
+}

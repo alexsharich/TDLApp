@@ -27,6 +27,11 @@ export type SetTodolistActionType = {
     type: 'SET-TODOLISTS'
     todolists: Array<TodolistType>
 }
+export type ChangeEntityActionType = {
+    type: 'CHANGE-ENTITY-STATUS',
+    id: string,
+    status: RequestStatusType
+}
 
 type ActionsType = RemoveTodolistActionType
     | AddTodolistActionType
@@ -35,6 +40,7 @@ type ActionsType = RemoveTodolistActionType
     | SetTodolistActionType
     | SetStatusActionType
     | SetErrorActionType
+    | ChangeEntityActionType
 
 export let todolistId1 = v1();
 export let todolistId2 = v1();
@@ -86,6 +92,9 @@ export const todolistsReducer = (state: Array<TodolistsDomainType> = initialStat
                 }
             })
         }
+        case 'CHANGE-ENTITY-STATUS': {
+            return state.map(t => t.id === action.id ? { ...t, entityStatus: action.status } : t)
+        }
         default:
             return state
     }
@@ -124,6 +133,13 @@ export const setTodolistsAC = (todolists: Array<TodolistType>): SetTodolistActio
         todolists: todolists
     }
 }
+export const changeEntityStatusAC = (id: string, status: RequestStatusType): ChangeEntityActionType => {
+    return {
+        type: 'CHANGE-ENTITY-STATUS',
+        id: id,
+        status: status
+    }
+}
 
 //Thunks
 export const fetchTodolistsThunkCreator = () => {
@@ -140,6 +156,7 @@ export const fetchTodolistsThunkCreator = () => {
 export const removeTodolistThunkCreator = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
+        dispatch(changeEntityStatusAC(todolistId,'loading'))
         todolistAPI.removeTodolist(todolistId)
             .then(res => {
                 dispatch(removeTodolistAC(todolistId))

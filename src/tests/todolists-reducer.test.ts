@@ -3,7 +3,7 @@ import { TodolistType } from '../api/todolistApi';
 import { RequestStatusType } from '../app-reducer';
 
 
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValueType, removeTodolistAC, setTodolistsAC, TodolistsDomainType, todolistsReducer } from './todolist-reducer';
+import { addTodolistAC, changeEntityStatusAC, changeTodolistFilterAC, changeTodolistTitleAC, FilterValueType, removeTodolistAC, setTodolistsAC, TodolistsDomainType, todolistsReducer } from './todolist-reducer';
 
 test('correct todolist should be removed', () => {
     let todolistId1 = v1();
@@ -177,7 +177,7 @@ test('Todolists should be set to the state', () => {
 
     expect(endState.length).toBe(2);
 });
-/* test('correct entity status  should be changed', () => {
+test('correct entity status  should be changed', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -204,8 +204,8 @@ test('Todolists should be set to the state', () => {
 
 
 
-    const endState = todolistsReducer(startState, setEntityStatusAC(todolistId2, newStatus));
+    const endState = todolistsReducer(startState, changeEntityStatusAC(todolistId2, newStatus));
 
     expect(endState[0].entityStatus).toBe("idle");
     expect(endState[1].entityStatus).toBe(newStatus);
-}); */
+});

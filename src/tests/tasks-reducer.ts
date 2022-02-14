@@ -1,11 +1,12 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { v1 } from "uuid";
-import { TaskStatuses, TaskType, todolistAPI, TodoTaskPriority, UpdateTaskModelType} from "../api/todolistApi";
+import { TaskStatuses, TaskType, todolistAPI, TodoTaskPriority, UpdateTaskModelType } from "../api/todolistApi";
 import { setErrorAC, SetErrorActionType, setStatusAC, SetStatusActionType } from "../app-reducer";
 
 import { TasksStateType } from "../AppWithRedux";
 import { AppRootStateType } from "../store";
+import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistActionType, setTodolistsAC, todolistId1, todolistId2 } from "./todolist-reducer";
 
 type removeTaskActionType = {
@@ -41,7 +42,7 @@ type SetTasksActionType = {
     tasks: Array<TaskType>,
     todolistId: string
 }
-type ActionsType = removeTaskActionType
+export type ActionsType = removeTaskActionType
     | addTaskActionType
     /*   | UpdateTaskTitleActionType
       | UpdateTaskStatusActionType */
@@ -204,13 +205,19 @@ export const addTaskThunkCreator = (todolistId: string, title: string) => {
                     dispatch(action)
                     dispatch(setStatusAC('succeeded'))
                 } else {
-                    if (res.data.messages.length) {
+                    handleServerAppError(res.data,dispatch)
+                   /*  if (res.data.messages.length) {
                         dispatch(setErrorAC(res.data.messages[0]))
                     } else {
                         dispatch(setErrorAC('Some error occurred'))
                     }
-                    dispatch(setStatusAC('failed'))
+                    dispatch(setStatusAC('failed')) */
                 }
+            })
+            .catch(error => {
+                handleServerNetworkError(error,dispatch)
+               /*  dispatch(setErrorAC(error.message))
+                dispatch(setStatusAC('failed')) */
             })
     }
 }
@@ -278,7 +285,22 @@ export const updateTaskThunkCreator = (taskId: string, domainModel: UpdateDomain
         }
         todolistAPI.updateTask(todolistId, taskId, APImodel)
             .then(res => {
-                dispatch(updateTaskAC(taskId, domainModel, todolistId))
+                if (res.data.resultCode === 0) {
+                    dispatch(updateTaskAC(taskId, domainModel, todolistId))
+                } else {
+                    handleServerAppError(res.data,dispatch)
+                   /*  if (res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setErrorAC('Some error occurred'))
+                    }
+                    dispatch(setStatusAC('failed')) */
+                }
+            })
+            .catch(error => {
+                handleServerNetworkError(error,dispatch)
+               /*  dispatch(setErrorAC(error.message))
+                dispatch(setStatusAC('failed')) */
             })
     }
 }
