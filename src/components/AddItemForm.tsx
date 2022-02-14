@@ -32,9 +32,9 @@ export const AddItemForm = React.memo(({ addItem, disabled = false }: AddItemFor
             addTask()
         }
     }
-    const addTaskHandler = () => {
-        addTask()
-    }
+    /*   const addTaskHandler = () => {
+          addTask()
+      } */
     return (
         <div>
             {/* <input className={error ? 'error' : ''}
@@ -49,7 +49,7 @@ export const AddItemForm = React.memo(({ addItem, disabled = false }: AddItemFor
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}
                 helperText={error} />
-            <IconButton onClick={addTaskHandler}
+            <IconButton onClick={addTask}
                 disabled={disabled}
                 color={'primary'}>
                 <ControlPoint />

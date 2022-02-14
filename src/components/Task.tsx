@@ -17,16 +17,17 @@ export const Task = React.memo((props: TaskPropsType) => {
     const removeTaskHandler = () => {
         props.removeTask(props.task.id, props.todolistId)
     }
-    const onChekboxClickHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChekboxClickHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         props.changeStatus(props.task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
-    }
+    }, [props.task.id, props.todolistId])
     const onChangeTaskTitleHandler = useCallback((newValue: string) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId)
-    }, [props.changeTaskTitle, props.task.id, props.todolistId])
+    }, [props.task.id, props.todolistId])
 
-    return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'taskIsDone' : ''}>
+    return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed/* TaskStatuses.Completed */ ? 'taskIsDone' : ''}>
         <Checkbox onChange={onChekboxClickHandler}
-            checked={props.task.status === TaskStatuses.Completed} />
+            checked={props.task.status === TaskStatuses.Completed}
+        />
         <EditableSpan title={props.task.title} onChange={onChangeTaskTitleHandler} />
         <IconButton onClick={removeTaskHandler}>
             <Delete />

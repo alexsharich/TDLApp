@@ -4,7 +4,7 @@ import { Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './components/AddItemForm';
 import { addTodolistThunkCreator, changeTodolistFilterAC, changetodolistTitleThunkCreator, fetchTodolistsThunkCreator, FilterValueType, removeTodolistThunkCreator, TodolistsDomainType } from './tests/todolist-reducer';
-import { addTaskThunkCreator, removeTaskThunkCreator, updateTaskThunkCreator } from './tests/tasks-reducer';
+import { addTaskThunkCreator, removeTaskThunkCreator, updateTaskStatusThunkCreator, updateTaskTitleThunkCreator } from './tests/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './store';
 import { TaskStatuses, TaskType } from './api/todolistApi';
@@ -32,7 +32,7 @@ function AppWithRedux() {
   const dispatch = useDispatch()
   const todolists = useSelector<AppRootStateType, Array<TodolistsDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-  const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+  const statusRequest = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
   useEffect(() => {
     dispatch(fetchTodolistsThunkCreator())
@@ -49,10 +49,10 @@ function AppWithRedux() {
     dispatch(action)
   }, [dispatch])
   const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
-    dispatch(updateTaskThunkCreator(taskId, { status }, todolistId))
+    dispatch(updateTaskStatusThunkCreator(taskId, status, todolistId))
   }, [dispatch])
-  const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-    dispatch(updateTaskThunkCreator(id, { title: newTitle }, todolistId))
+  const changeTaskTitle = useCallback((id: string, title: string, todolistId: string) => {
+    dispatch(updateTaskTitleThunkCreator(id, title, todolistId))
   }, [dispatch])
 
   const removeTodolist = useCallback((todolistId: string) => {
@@ -62,7 +62,6 @@ function AppWithRedux() {
   }, [dispatch])
   const addTodolist = useCallback((newTodolistTitle: string) => {
     dispatch(addTodolistThunkCreator(newTodolistTitle))
-
   }, [dispatch])
   const changeTodolistTitle = useCallback((id: string, newTodolistTitle: string) => {
     dispatch(changetodolistTitleThunkCreator(id, newTodolistTitle))
@@ -93,7 +92,7 @@ function AppWithRedux() {
           </Typography>
           <Button color='inherit'>Login</Button>
         </Toolbar>
-        {status === 'loading' && <LinearProgress color="secondary" />}
+        {statusRequest === 'loading' && <LinearProgress color="secondary" />}
       </AppBar>
       <Container fixed>
         <Grid container style={{ padding: '20px' }}>
@@ -110,9 +109,8 @@ function AppWithRedux() {
                 <Grid item>
                   <Paper style={{ padding: '10px' }}>
                     <Todolist key={tl.id}
-                      todolist={tl}
-                      /* id={tl.id}
-                      title={tl.title} */
+                      id={tl.id}
+                      title={tl.title}
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
@@ -120,7 +118,7 @@ function AppWithRedux() {
                       changeStatus={changeStatus}
                       changeTaskTitle={changeTaskTitle}
                       changeTodolistTitle={changeTodolistTitle}
-                     /*  filter={tl.filter} */
+                      filter={tl.filter}
                       removeTodolist={removeTodolist} />
                   </Paper>
                 </Grid>
