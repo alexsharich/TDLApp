@@ -2,11 +2,13 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { Delete } from "@material-ui/icons";
 import React, { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { TaskStatuses, TaskType } from "./api/todolistApi";
 import { AddItemForm } from "./components/AddItemForm";
 import { EditableSpan } from "./components/EditableSpan";
 import { Task } from "./components/Task";
+import { AppRootStateType } from "./store";
 import { fetchTasksThunkCreator } from "./tests/tasks-reducer";
 import { FilterValueType, TodolistsDomainType } from "./tests/todolist-reducer";
 
@@ -37,6 +39,8 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 
     const dispatch = useDispatch()
 
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
     useEffect(() => {
         dispatch(fetchTasksThunkCreator(props.id))
     }, [])
@@ -48,6 +52,10 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     }
     if (props.filter === 'completed') {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
+    }
+
+    if (!isLoggedIn) {
+        return <Navigate to='/login' />
     }
 
     return (

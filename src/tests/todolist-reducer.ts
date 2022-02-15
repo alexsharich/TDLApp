@@ -3,6 +3,7 @@ import { Dispatch } from "redux";
 import { v1 } from "uuid";
 import { TaskType, todolistAPI, TodolistType } from "../api/todolistApi";
 import { RequestStatusType, SetErrorActionType, setStatusAC, SetStatusActionType } from "../app-reducer";
+import { handleServerNetworkError } from "../utils/error-utils";
 
 
 export type RemoveTodolistActionType = {
@@ -150,6 +151,9 @@ export const fetchTodolistsThunkCreator = () => {
                 const action = setTodolistsAC(res.data)
                 dispatch(action)
                 dispatch(setStatusAC('succeeded'))
+            })
+            .catch(error=> {
+                handleServerNetworkError(error,dispatch)
             })
     }
 }

@@ -205,19 +205,19 @@ export const addTaskThunkCreator = (todolistId: string, title: string) => {
                     dispatch(action)
                     dispatch(setStatusAC('succeeded'))
                 } else {
-                    handleServerAppError(res.data,dispatch)
-                   /*  if (res.data.messages.length) {
-                        dispatch(setErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(setErrorAC('Some error occurred'))
-                    }
-                    dispatch(setStatusAC('failed')) */
+                    handleServerAppError(res.data, dispatch)
+                    /*  if (res.data.messages.length) {
+                         dispatch(setErrorAC(res.data.messages[0]))
+                     } else {
+                         dispatch(setErrorAC('Some error occurred'))
+                     }
+                     dispatch(setStatusAC('failed')) */
                 }
             })
             .catch(error => {
-                handleServerNetworkError(error,dispatch)
-               /*  dispatch(setErrorAC(error.message))
-                dispatch(setStatusAC('failed')) */
+                handleServerNetworkError(error, dispatch)
+                /*  dispatch(setErrorAC(error.message))
+                 dispatch(setStatusAC('failed')) */
             })
     }
 }
@@ -288,19 +288,19 @@ export const updateTaskThunkCreator = (taskId: string, domainModel: UpdateDomain
                 if (res.data.resultCode === 0) {
                     dispatch(updateTaskAC(taskId, domainModel, todolistId))
                 } else {
-                    handleServerAppError(res.data,dispatch)
-                   /*  if (res.data.messages.length) {
-                        dispatch(setErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(setErrorAC('Some error occurred'))
-                    }
-                    dispatch(setStatusAC('failed')) */
+                    handleServerAppError(res.data, dispatch)
+                    /*  if (res.data.messages.length) {
+                         dispatch(setErrorAC(res.data.messages[0]))
+                     } else {
+                         dispatch(setErrorAC('Some error occurred'))
+                     }
+                     dispatch(setStatusAC('failed')) */
                 }
             })
             .catch(error => {
-                handleServerNetworkError(error,dispatch)
-               /*  dispatch(setErrorAC(error.message))
-                dispatch(setStatusAC('failed')) */
+                handleServerNetworkError(error, dispatch)
+                /*  dispatch(setErrorAC(error.message))
+                 dispatch(setStatusAC('failed')) */
             })
     }
 }

@@ -20,7 +20,11 @@ import Paper from '@material-ui/core/Paper';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import { RequestStatusType } from './app-reducer';
+import { RequestStatusType, setAppInitializedThunkCreator } from './app-reducer';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Login } from './login/Login';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { logoutThunkCreator } from './login/login-Reducer';
 
 
 export type TasksStateType = {
@@ -33,9 +37,13 @@ function AppWithRedux() {
   const todolists = useSelector<AppRootStateType, Array<TodolistsDomainType>>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
   const statusRequest = useSelector<AppRootStateType, RequestStatusType>(state => state.app.statusRequest)
+  const isInitilized = useSelector<AppRootStateType, boolean>(state => state.app.initialized)
+  const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
 
   useEffect(() => {
     dispatch(fetchTodolistsThunkCreator())
+    dispatch(setAppInitializedThunkCreator())
   }, [])
 
   let todolistId1 = v1();
@@ -77,6 +85,17 @@ function AppWithRedux() {
 
   const isOpen = error !== null
 
+  const logoutHandler = useCallback(() => {
+    dispatch(logoutThunkCreator())
+  }, [])
+
+  if (!isInitilized) {
+    return <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+      <CircularProgress />
+    </div>
+  }
+
+
   return (
     <div className="App">
       <AppBar position='static' >
@@ -92,43 +111,52 @@ function AppWithRedux() {
           <Typography variant='h6'>
             TODOLIST
           </Typography>
-          <Button color='inherit'>Login</Button>
+          {isLoggedIn && <Button color='inherit' onClick={logoutHandler}>Login Out</Button>}
         </Toolbar>
         {statusRequest === 'loading' && <LinearProgress color="secondary" />}
       </AppBar>
-      <Container fixed>
-        <Grid container style={{ padding: '20px' }}>
-          <AddItemForm addItem={addTodolist} />
-        </Grid>
-        <Grid container spacing={3}>
-          {
-            todolists.map(tl => {
+      <Container fixed >
+        <Routes>
+          <Route path='/404' element={<h1>404: Page not found</h1>} />
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<Navigate to={'/404'} />} />
+          <Route path='/' element={<div>
+            <Grid container style={{ padding: '20px' }}>
+              <AddItemForm addItem={addTodolist} />
+            </Grid>
+            <Grid container spacing={3}>
+              {
+                todolists.map(tl => {
 
-              let allTasksForTodolist = tasks[tl.id]
-              let tasksForTodolist = allTasksForTodolist
+                  let allTasksForTodolist = tasks[tl.id]
+                  let tasksForTodolist = allTasksForTodolist
 
-              return (
-                <Grid item>
-                  <Paper style={{ padding: '10px' }}>
-                    <Todolist key={tl.id}
-                    todolist={tl}
-                      id={tl.id}
-                      title={tl.title}
-                      tasks={tasksForTodolist}
-                      removeTask={removeTask}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
-                      changeStatus={changeStatus}
-                      changeTaskTitle={changeTaskTitle}
-                      changeTodolistTitle={changeTodolistTitle}
-                      filter={tl.filter}
-                      removeTodolist={removeTodolist} />
-                  </Paper>
-                </Grid>
-              )
-            })
-          }
-        </Grid>
+                  return (
+                    <Grid item>
+                      <Paper style={{ padding: '10px' }}>
+                        <Todolist key={tl.id}
+                          todolist={tl}
+                          id={tl.id}
+                          title={tl.title}
+                          tasks={tasksForTodolist}
+                          removeTask={removeTask}
+                          changeFilter={changeFilter}
+                          addTask={addTask}
+                          changeStatus={changeStatus}
+                          changeTaskTitle={changeTaskTitle}
+                          changeTodolistTitle={changeTodolistTitle}
+                          filter={tl.filter}
+                          removeTodolist={removeTodolist} />
+                      </Paper>
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
+          </div>} />
+        </Routes>
+
+
       </Container>
 
     </div >
