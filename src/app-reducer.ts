@@ -1,3 +1,4 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import React from 'react'
 import { Dispatch } from 'redux'
 import { authAPI } from './api/todolistApi'
@@ -31,8 +32,27 @@ const initialState: InitialStateType = {
     initialized: false
 }
 
+const slice = createSlice({
+    name: 'app',
+    initialState: initialState,
+    reducers: {
+        setErrorAC(state, action: PayloadAction<{ error: string | null }>) {
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+            state.error = action.payload.error
+        },
+        setStatusAC(state, action: PayloadAction<{ statusRequest: RequestStatusType }>) {
+            state.statusRequest = action.payload.statusRequest
+        },
+        setAppInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
+            state.initialized = action.payload.initialized
+        },
+    }
+})
+export const { setErrorAC, setStatusAC, setAppInitializedAC } = slice.actions
+export const appReducer = slice.reducer
+
+
+/* export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP-SET-STATUS': {
             return { ...state, statusRequest: action.statusRequest }
@@ -46,11 +66,11 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         default:
             return state
     }
-}
+} */
 
 //Action
 
-export const setErrorAC = (error: string | null): SetErrorActionType => {
+/* export const setErrorAC = (error: string | null): SetErrorActionType => {
     return {
         type: 'APP-SET-ERROR',
         error: error
@@ -67,7 +87,7 @@ export const setAppInitializedAC = (value: boolean): SetAppInitializedActionType
         type: 'SET-APP-INITIALIZED',
         value: value
     }
-}
+} */
 
 //Thunk
 
@@ -76,9 +96,9 @@ export const setAppInitializedThunkCreator = () => {
         authAPI.me()
             .then(res => {
                 if (res.data.resultCode === 0) {
-                    dispatch(setIsLoggedInActionCreator(true))
+                    dispatch(setIsLoggedInActionCreator({ value: true }))
                 }
-                dispatch(setAppInitializedAC(true))
+                dispatch(setAppInitializedAC({ initialized: true }))
             })
     }
 }

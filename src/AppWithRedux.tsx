@@ -77,7 +77,7 @@ function AppWithRedux() {
     dispatch(changetodolistTitleThunkCreator(id, newTodolistTitle))
   }, [dispatch])
   const changeFilter = useCallback((todolistId: string, value: FilterValueType) => {
-    const action = changeTodolistFilterAC(todolistId, value)
+    const action = changeTodolistFilterAC({ todolistId, newFilter: value })
     dispatch(action)
   }, [dispatch])
 

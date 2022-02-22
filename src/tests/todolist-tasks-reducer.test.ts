@@ -12,7 +12,7 @@ test('ids should be equals', () => {
         addedDate:'',
         id: 'werwerwer'
     }
-    const action = addTodolistAC(todolist);
+    const action = addTodolistAC({todolist});
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)
