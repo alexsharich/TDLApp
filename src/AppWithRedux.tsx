@@ -20,7 +20,7 @@ import Paper from '@material-ui/core/Paper';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import { RequestStatusType, setAppInitializedThunkCreator } from './app-reducer';
+import { RequestStatusType, setAppInitializedThunkCreator, setErrorAC } from './app-reducer';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from './login/Login';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -89,6 +89,10 @@ function AppWithRedux() {
     dispatch(logoutThunkCreator())
   }, [])
 
+  const onCloseHandler = () => {
+    dispatch(setErrorAC({ error: null }))
+  }
+
   if (!isInitilized) {
     return <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
       <CircularProgress />
@@ -99,7 +103,7 @@ function AppWithRedux() {
   return (
     <div className="App">
       <AppBar position='static' >
-        <Snackbar open={isOpen} autoHideDuration={3000} >
+        <Snackbar open={isOpen} autoHideDuration={3000} onClose={onCloseHandler}>
           <Alert severity="error" >
             <span>{error}</span>
           </Alert>
