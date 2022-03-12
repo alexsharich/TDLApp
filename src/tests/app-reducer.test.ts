@@ -12,7 +12,7 @@ beforeEach(() => {
 
 test('correct error should be added', () => {
 
-    const endState = appReducer(startState, setErrorAC('some error'))
+    const endState = appReducer(startState, setErrorAC({ error: 'some error' }))
 
     expect(endState.error).toBe('some error');
 });
@@ -20,7 +20,7 @@ test('correct error should be added', () => {
 
 test('correct status should be added', () => {
 
-    const endState = appReducer(startState, setStatusAC('succeeded'))
+    const endState = appReducer(startState, setStatusAC({ statusRequest: 'succeeded' }))
 
     expect(endState.statusRequest).toBe('succeeded');
 });
