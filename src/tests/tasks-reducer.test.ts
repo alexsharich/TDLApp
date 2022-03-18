@@ -1,6 +1,6 @@
 import { TaskStatuses, TodoTaskPriority } from "../api/todolistApi";
 import { TasksStateType } from "../AppWithRedux";
-import { addTaskAC, removeTaskAC, setTasksAC, tasksReducer, updateTaskAC } from "./tasks-reducer";
+import { addTaskAC, fetchTasksThunkCreator,   removeTaskThunkCreator,   tasksReducer, updateTaskAC } from "./tasks-reducer";
 import { addTodolistAC, removeTodolistAC, setTodolistsAC } from "./todolist-reducer";
 
 test.skip('correct task should be deleted from correct array', () => {
@@ -89,7 +89,8 @@ test.skip('correct task should be deleted from correct array', () => {
         ]
     };
 
-    const action = removeTaskAC({ id: '2', todolistId: 'todolistId2' });
+    const param = {id: '2', todolistId: 'todolistId2'} 
+    const action = removeTaskThunkCreator.fulfilled(param,'',param);
 
     const endState = tasksReducer(startState, action)
 
@@ -782,7 +783,7 @@ test('tasks for todolists should be added ', () => {
             }
         ]
     };
-    const action = setTasksAC({ tasks: startState['todolistId1'], todolistId: 'todolistId1' })
+    const action = fetchTasksThunkCreator.fulfilled({ tasks: startState['todolistId1'], todolistId: 'todolistId1' },'requestId','todolistId1')
 
     const endState = tasksReducer({
         'todolistId2': [],

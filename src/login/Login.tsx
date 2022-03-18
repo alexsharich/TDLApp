@@ -6,18 +6,26 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormLabel from '@material-ui/core/FormLabel'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import { useFormik } from 'formik'
+import { FormikHelpers, useFormik } from 'formik'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import { AppRootStateType } from '../store'
+import { AppRootStateType, useAppDispatch } from '../store'
 import { loginThunkCreator } from './login-Reducer'
 
 
+type FormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+
 export const Login = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn)
+
+
 
     const formik = useFormik({
         validate: (values) => {
@@ -37,8 +45,15 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-            dispatch(loginThunkCreator(values))
+        onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const action = await dispatch(loginThunkCreator(values))
+            if (loginThunkCreator.rejected.match(action)) {
+
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
         },
     })
 

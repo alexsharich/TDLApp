@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { appReducer } from "./app-reducer";
@@ -20,3 +21,7 @@ export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)
 })
+
+type AppDispatchType = typeof store.dispatch
+
+export const useAppDispatch = () => useDispatch<AppDispatchType>()

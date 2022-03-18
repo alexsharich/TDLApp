@@ -50,7 +50,7 @@ function AppWithRedux() {
   let todolistId2 = v1();
 
   const removeTask = useCallback((id: string, todolistId: string) => {
-    dispatch(removeTaskThunkCreator(id, todolistId))
+    dispatch(removeTaskThunkCreator({id, todolistId}))
   }, [dispatch])
   const addTask = useCallback((todolistId: string, title: string) => {
     const action = addTaskThunkCreator(todolistId, title)

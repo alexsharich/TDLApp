@@ -46,10 +46,14 @@ export enum TodoTaskPriority {
     Urgently = 3,
     Later = 4
 }
+export type FieldErrorType ={
+    field:string
+    error:string
+}
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
-    fieldsError: Array<string>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 }
 export type TodolistType = {
