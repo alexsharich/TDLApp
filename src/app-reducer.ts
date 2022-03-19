@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import React from 'react'
 import { Dispatch } from 'redux'
 import { authAPI } from './api/todolistApi'
@@ -26,15 +26,23 @@ type SetAppInitializedActionType = {
     value: boolean
 }
 
-const initialState: InitialStateType = {
-    statusRequest: 'idle',
-    error: null,
-    initialized: false
-}
+export const setAppInitializedThunkCreator = createAsyncThunk('app/setAppInitializedThunkCreator', async (param, { dispatch }) => {
+    const res = await authAPI.me()
+    if (res.data.resultCode === 0) {
+        dispatch(setIsLoggedInActionCreator({ value: true }))
+    }
+    return
+})
+
+
 
 const slice = createSlice({
     name: 'app',
-    initialState: initialState,
+    initialState: {
+        statusRequest: 'idle',
+        error: null,
+        initialized: false
+    } as InitialStateType,
     reducers: {
         setErrorAC(state, action: PayloadAction<{ error: string | null }>) {
 
@@ -42,13 +50,15 @@ const slice = createSlice({
         },
         setStatusAC(state, action: PayloadAction<{ statusRequest: RequestStatusType }>) {
             state.statusRequest = action.payload.statusRequest
-        },
-        setAppInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
-            state.initialized = action.payload.initialized
-        },
+        },  
+    },
+    extraReducers: builder => {
+        builder.addCase(setAppInitializedThunkCreator.fulfilled, (state) => {
+            state.initialized = true
+        })
     }
 })
-export const { setErrorAC, setStatusAC, setAppInitializedAC } = slice.actions
+export const { setErrorAC, setStatusAC } = slice.actions
 export const appReducer = slice.reducer
 
 
@@ -91,7 +101,7 @@ export const setAppInitializedAC = (value: boolean): SetAppInitializedActionType
 
 //Thunk
 
-export const setAppInitializedThunkCreator = () => {
+/* export const setAppInitializedThunkCreator = () => {
     return (dispatch: Dispatch) => {
         authAPI.me()
             .then(res => {
@@ -101,4 +111,4 @@ export const setAppInitializedThunkCreator = () => {
                 dispatch(setAppInitializedAC({ initialized: true }))
             })
     }
-}
+} */
