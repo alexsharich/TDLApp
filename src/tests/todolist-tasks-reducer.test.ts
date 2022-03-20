@@ -1,7 +1,7 @@
 import { TodolistType } from "../api/todolistApi";
 import { TasksStateType } from "../AppWithRedux";
 import { tasksReducer } from "./tasks-reducer";
-import { addTodolistAC, TodolistsDomainType, todolistsReducer } from "./todolist-reducer";
+import {  addTodolistThunkCreator, TodolistsDomainType, todolistsReducer } from "./todolist-reducer";
 
 test('ids should be equals', () => {
     const startTasksState: TasksStateType = {};
@@ -12,7 +12,7 @@ test('ids should be equals', () => {
         addedDate: '',
         id: 'werwerwer'
     }
-    const action = addTodolistAC({ todolist });
+    const action = addTodolistThunkCreator.fulfilled({ todolist },'requestId',todolist.title);
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)

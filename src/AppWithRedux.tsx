@@ -50,19 +50,19 @@ function AppWithRedux() {
   let todolistId2 = v1();
 
   const removeTask = useCallback((id: string, todolistId: string) => {
-    dispatch(removeTaskThunkCreator({id, todolistId}))
+    dispatch(removeTaskThunkCreator({ id, todolistId }))
   }, [dispatch])
   const addTask = useCallback((todolistId: string, title: string) => {
-    const action = addTaskThunkCreator(todolistId, title)
+    const action = addTaskThunkCreator({ todolistId, title })
     dispatch(action)
   }, [dispatch])
   const changeStatus = useCallback((taskId: string, status: TaskStatuses, todolistId: string) => {
     //dispatch(updateTaskStatusThunkCreator(taskId, status, todolistId))
-    dispatch(updateTaskThunkCreator(taskId, { status }, todolistId))
+    dispatch(updateTaskThunkCreator({ taskId: taskId, model: { status }, todolistId: todolistId }))
   }, [dispatch])
   const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
     //dispatch(updateTaskTitleThunkCreator(id, title, todolistId))
-    dispatch(updateTaskThunkCreator(id, { title: newTitle }, todolistId))
+    dispatch(updateTaskThunkCreator({ taskId: id, model: { title: newTitle }, todolistId: todolistId }))
   }, [dispatch])
 
   const removeTodolist = useCallback((todolistId: string) => {
@@ -74,7 +74,7 @@ function AppWithRedux() {
     dispatch(addTodolistThunkCreator(newTodolistTitle))
   }, [dispatch])
   const changeTodolistTitle = useCallback((id: string, newTodolistTitle: string) => {
-    dispatch(changetodolistTitleThunkCreator(id, newTodolistTitle))
+    dispatch(changetodolistTitleThunkCreator({id, newTodolistTitle}))
   }, [dispatch])
   const changeFilter = useCallback((todolistId: string, value: FilterValueType) => {
     const action = changeTodolistFilterAC({ todolistId, newFilter: value })
